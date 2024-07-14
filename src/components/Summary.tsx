@@ -3,8 +3,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
+import sunrise from '../../public/sunrise.jpeg';
 
-import sunrise from '../assets/sunrise.jpeg'
 
 export default function Summary() {
     return (
