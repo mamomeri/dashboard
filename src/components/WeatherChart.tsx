@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 import Paper from '@mui/material/Paper';
-import fetchWeatherData, { Forecast } from '../utils/fetchWeatherData'; // Asegúrate de exportar la interfaz Forecast desde fetchWeatherData
+import fetchWeatherData, { Forecast } from '../utils/fetchWeatherData';
 
-const WeatherChart: React.FC = () => {
+interface WeatherChartProps {
+  selectedVariable: string;
+}
+
+const WeatherChart: React.FC<WeatherChartProps> = ({ selectedVariable }) => {
   const [data, setData] = useState<(string | number)[][]>([
     ["Hora", "Precipitación", "Humedad", "Nubosidad"],
   ]);
@@ -12,29 +16,68 @@ const WeatherChart: React.FC = () => {
     const getData = async () => {
       const { forecasts }: { forecasts: Forecast[] } = await fetchWeatherData();
 
-      // Formateamos los datos para el gráfico
-      const formattedData = forecasts.map((forecast: Forecast) => {
-        const date = new Date(forecast.from);
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        const time = `${hours}:${minutes}`;
-        
-        return [
-          time,
-          parseFloat(forecast.precipitation),
-          parseFloat(forecast.humidity),
-          parseFloat(forecast.cloudiness), // Usamos el atributo 'cloudiness' para la nubosidad
-        ];
-      });
+      let formattedData: (string | number)[][] = [];
 
-      setData(prevData => [...prevData, ...formattedData]);
+      if (selectedVariable === "Todos") {
+        formattedData = forecasts.map((forecast: Forecast) => {
+          const date = new Date(forecast.from);
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+          const time = `${hours}:${minutes}`;
+
+          return [
+            time,
+            parseFloat(forecast.precipitation),
+            parseFloat(forecast.humidity),
+            parseFloat(forecast.cloudiness),
+          ];
+        });
+
+        setData([
+          ["Hora", "Precipitación", "Humedad", "Nubosidad"],
+          ...formattedData
+        ]);
+      } else {
+        formattedData = forecasts.map((forecast: Forecast) => {
+          const date = new Date(forecast.from);
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+          const time = `${hours}:${minutes}`;
+
+          let value = 0;
+          switch (selectedVariable) {
+            case "Precipitación":
+              value = parseFloat(forecast.precipitation);
+              break;
+            case "Humedad":
+              value = parseFloat(forecast.humidity);
+              break;
+            case "Nubosidad":
+              value = parseFloat(forecast.cloudiness);
+              break;
+            default:
+              value = 0;
+              break;
+          }
+
+          return [
+            time,
+            value
+          ];
+        });
+
+        setData([
+          ["Hora", selectedVariable],
+          ...formattedData
+        ]);
+      }
     };
 
     getData();
-  }, []);
+  }, [selectedVariable]);
 
-  let options = {
-    title: "Precipitación, Humedad y Nubosidad vs Hora",
+  const options = {
+    title: `${selectedVariable} vs Hora`,
     curveType: "function",
     legend: { position: "right" },
   };
@@ -59,3 +102,4 @@ const WeatherChart: React.FC = () => {
 }
 
 export default WeatherChart;
+

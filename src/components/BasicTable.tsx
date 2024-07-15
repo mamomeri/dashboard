@@ -14,7 +14,7 @@ interface Forecast {
   precipitation: string;
   temperature: string;
   humidity: string;
-  cloudiness: string; // Añadir la propiedad de nubosidad
+  cloudiness: string;
 }
 
 interface BasicTableProps {
@@ -23,8 +23,8 @@ interface BasicTableProps {
 
 export default function BasicTable({ forecast }: BasicTableProps) {
   return (
-    <TableContainer component={Paper} style={{ maxHeight: 300 }}>
-      <Table stickyHeader aria-label="weather forecast table">
+    <TableContainer component={Paper} style={{ maxHeight: 277 }}>
+      <Table stickyHeader aria-label="weather forecast table" style={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             <TableCell>Time Period</TableCell>
@@ -32,7 +32,7 @@ export default function BasicTable({ forecast }: BasicTableProps) {
             <TableCell align="right">Precipitation</TableCell>
             <TableCell align="right">Temperature (K)</TableCell>
             <TableCell align="right">Humidity (%)</TableCell>
-            <TableCell align="right">Cloudiness (%)</TableCell> {/* Añadir la columna de nubosidad */}
+            <TableCell align="right">Cloudiness (%)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -45,7 +45,7 @@ export default function BasicTable({ forecast }: BasicTableProps) {
               <TableCell align="right">{period.precipitation}</TableCell>
               <TableCell align="right">{period.temperature}</TableCell>
               <TableCell align="right">{period.humidity}</TableCell>
-              <TableCell align="right">{period.cloudiness}</TableCell> {/* Mostrar nubosidad */}
+              <TableCell align="right">{period.cloudiness}</TableCell>
             </TableRow>
           ))}
         </TableBody>
