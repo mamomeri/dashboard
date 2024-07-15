@@ -1,18 +1,17 @@
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 
 interface ControlPanelProps {
   setSelectedVariable: (variable: string) => void;
 }
 
 export default function ControlPanel({ setSelectedVariable }: ControlPanelProps) {
-  const [selected, setSelected] = useState(-1);
   const descriptionRef = useRef<HTMLDivElement>(null);
 
   const items = [
@@ -26,7 +25,6 @@ export default function ControlPanel({ setSelectedVariable }: ControlPanelProps)
 
   const handleChange = (event: SelectChangeEvent) => {
     const idx = parseInt(event.target.value);
-    setSelected(idx);
     setSelectedVariable(items[idx]["name"]);
 
     if (descriptionRef.current !== null) {
@@ -45,6 +43,7 @@ export default function ControlPanel({ setSelectedVariable }: ControlPanelProps)
       <Typography mb={2} component="h3" variant="h6" color="primary">
         Variables Meteorológicas
       </Typography>
+
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
           <InputLabel id="simple-select-label">Variables</InputLabel>
@@ -60,6 +59,8 @@ export default function ControlPanel({ setSelectedVariable }: ControlPanelProps)
           </Select>
         </FormControl>
       </Box>
+
+      {/* Muestra la descripción de la variable seleccionada */}
       <Typography ref={descriptionRef} mt={2} component="p" color="text.secondary" />
     </Paper>
   );
