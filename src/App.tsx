@@ -35,7 +35,7 @@ function App() {
           <Indicator title='Precipitación' subtitle='Probabilidad %' value={weatherData.length ? parseFloat(weatherData[0].precipitation) : 0} />
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Indicator title='Presión Atmosferica ' subtitle='hPa' value={weatherData.length ? parseFloat(weatherData[0].pressure) : 0} />
+          <Indicator title='Presión Atmosférica ' subtitle='hPa' value={weatherData.length ? parseFloat(weatherData[0].pressure) : 0} />
         </Grid>
         <Grid item xs={12} sm={4}>
           <Indicator title='Sensación Térmica' subtitle='kelvin' value={weatherData.length ? parseFloat(weatherData[0].feels_like) : 0} />
